@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 template <typename E>
 class SLinkedList;
 
@@ -33,7 +35,19 @@ public:
         delete old;                           // delete the old head
     }
     const E& getMiddle() const {
-        return {};
+        if (empty()) {
+            throw std::runtime_error("List is empty");
+        }
+
+        auto slow = head;
+        auto fast = head;
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return slow->elem;
     }    
 private:
     SNode<E>* head;                           // head of the list
